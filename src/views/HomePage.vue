@@ -1,5 +1,34 @@
 <script setup>
+import { computed } from 'vue'
+import AnimeCard from '@/components/AnimeCard.vue'
+import { useAnimeRoulette } from '@/composables/useAnimeRoulette'
+import WatchList from '@/components/WatchList.vue'
 
+const {
+  anime,
+  loading,
+  error,
+  spin,
+  cooldownLeft,
+  addToWatchlist,
+  watchlist,
+  isInWatchlist,
+  removeFromWatchlist,
+} = useAnimeRoulette()
+
+const spinDisabled = computed(() => loading.value || cooldownLeft.value > 0)
+
+const spinLabel = computed(() => {
+  if (loading.value) {
+    return 'Spinning...'
+  }
+
+  if (cooldownLeft.value > 0) {
+    return `Cooldown ${cooldownLeft.value}s`
+  }
+
+  return 'SPIN 🎰'
+})
 </script>
 
 <template>
